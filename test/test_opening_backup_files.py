@@ -44,6 +44,22 @@ def test_getting_all_files_in_abs_dir():
   def_files = map(lambda x: os.path.join(full_path_dir, x), ["backup_file_mdp.txt", "backup_file_xrf.txt"])
   assert calc_files == def_files
 
+def test_get_table_name():
+  table_name = parse_backup.get_table_name(BACKUP_FILE_MDP)
+  assert table_name == "compositions"
+
+def test_get_fields():
+  parsed_fields = parse_backup.get_fields(BACKUP_FILE_MDP)
+  actual_fields = {'id': ['int(11)', 'NOT NULL auto_increment'],
+                   'prodcut_id': ['int(11)', 'default NULL'],
+                   'component_id': ['int(11)', 'default NULL'],
+                   'created_at': ['datetime', 'default NULL'],
+                   'updated_at': ['datetime', 'default NULL'],
+                   'quantity': ['decimal(15,3)', "default '1.000'"],
+                   'line_num': ['int(11)', 'default NULL'],
+                   'fixed': ['tinyint(11)', 'default NULL']}
+  assert parsed_fields == actual_fields
+
 def test_parsing_backup_file_into_python_object():
   pass
 
