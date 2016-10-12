@@ -10,7 +10,9 @@ I'm making a couple additional assumptions that were not covered in the problem:
 * We want to persist the storage of the intermediate data sets. That is, store each backup file
 
 ## Approach
-* Open each file within a directory in timestamp order
+* Open each file within a directory in any order.
+  * Assume we can use timestamp of files for ordering
+  * Assume name has no timestamp indicator (Though it probably should)
 * Store each file as a python object into memory
 * Convert each python object to a json blob
 * Be able to read each json and convert back into python object
