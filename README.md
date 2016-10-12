@@ -11,7 +11,7 @@ I'm making a couple additional assumptions that were not covered in the problem:
 
 ## Approach
 * Open each file within a directory in any order.
-  * Assume we can use timestamp of files for ordering
+  * Assume we cannot use timestamp of files for ordering
   * Assume name has no timestamp indicator (Though it probably should)
 * Store each file as a python object into memory
 * Convert each python object to a json blob
