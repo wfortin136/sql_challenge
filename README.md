@@ -40,5 +40,6 @@ We will now install the dependencies for this project
 ## Run
 
 ## Tests
+> nosetests -s -v
 
 ## Documentation

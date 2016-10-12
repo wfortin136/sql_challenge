@@ -7,21 +7,21 @@ from sql_backup_data import SQLBackup
 #    "teardown fixture"
 
 
-def test_storing_name_of_file_into_python_object()
+def test_storing_name_of_file_into_python_object():
   pass
 
-def test_reading_json_blob_into_python_object()
+def test_reading_json_blob_into_python_object():
   pass
 
-def test_converting_python_object_to_json()
+def test_converting_python_object_to_json():
   pass
 
-def test_writing_json_data_to_file()
+def test_writing_json_data_to_file():
   pass
 
-def test_new_column_between_json_blobs()
+def test_new_column_between_json_blobs():
   pass
 
-def test_newest_data_between_json_blobs()
+def test_newest_data_between_json_blobs():
   pass
 

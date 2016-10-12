@@ -1,5 +1,6 @@
 import os
 import parse_backup 
+import collections
 
 CUR_DIR = os.path.abspath(os.path.dirname(__file__))
 BACKUP_DIR = os.path.join(CUR_DIR, "backup_files")
@@ -50,15 +51,27 @@ def test_get_table_name():
 
 def test_get_fields():
   parsed_fields = parse_backup.get_fields(BACKUP_FILE_MDP)
-  actual_fields = {'id': ['int(11)', 'NOT NULL auto_increment'],
-                   'prodcut_id': ['int(11)', 'default NULL'],
-                   'component_id': ['int(11)', 'default NULL'],
-                   'created_at': ['datetime', 'default NULL'],
-                   'updated_at': ['datetime', 'default NULL'],
-                   'quantity': ['decimal(15,3)', "default '1.000'"],
-                   'line_num': ['int(11)', 'default NULL'],
-                   'fixed': ['tinyint(11)', 'default NULL']}
+  actual_fields = collections.OrderedDict([
+                   ('id', ['int(11)', 'NOT NULL auto_increment']),
+                   ('product_id', ['int(11)', 'default NULL']),
+                   ('component_id', ['int(11)', 'default NULL']),
+                   ('created_at', ['datetime', 'default NULL']),
+                   ('updated_at', ['datetime', 'default NULL']),
+                   ('quantity', ['decimal(15,3)', "default '1.000'"]),
+                   ('line_num', ['int(11)', 'default NULL']),
+                   ('fixed', ['tinyint(1)', 'default NULL'])])
   assert parsed_fields == actual_fields
+
+def test_get_values():
+  fields = parse_backup.get_fields(BACKUP_FILE_MDP)
+  values = parse_backup.get_values(BACKUP_FILE_MDP, fields)
+  actual_values={
+      '1': {'product_id':'1', 'component_id':'2', 'created_at':'NULL', 'updated_at':'NULL','quantity':'1.000', 'line_num':'NULL', 'fixed': 'NULL'},
+      '2': {'product_id':'1', 'component_id':'3', 'created_at':'NULL', 'updated_at':'NULL','quantity':'1.000', 'line_num':'NULL', 'fixed': 'NULL'},
+      '3': {'product_id':'NULL', 'component_id':'190', 'created_at':'2008-07-24 10:27:34', 'updated_at':'2008-07-24 10:27:34','quantity':'5.000', 'line_num':'NULL', 'fixed': 'NULL'},
+      '4': {'product_id':'259', 'component_id':'358', 'created_at':'2008-11-19 16:50:36', 'updated_at':'2008-11-19 16:52:20','quantity':'1.000', 'line_num':'80', 'fixed': '1'},
+                }
+  assert values == actual_values
 
 def test_parsing_backup_file_into_python_object():
   pass
