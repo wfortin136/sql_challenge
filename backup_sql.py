@@ -2,6 +2,7 @@ import os
 import re
 import collections
 import shlex
+import json
 
 def get_all_file_names(directory):
   """directory must be absolute path. 
@@ -18,21 +19,16 @@ def read_file(file):
 class ParsedData(object):
   
   def __init__(self, file_str):
-    self.table = self.get_table_name(file_str)
-    self.fields = self.get_fields(file_str)
+    self.table = self.__get_table_name(file_str)
+    self.fields = self.__get_fields(file_str)
     self.primary_key = self.fields.keys()[0]
-    self.values = self.get_values(file_str)
+    self.values = self.__get_values(file_str)
   
-  def parse_string(self, data_str):
-    """data_str is a string of the full data set
-    Returns a python dictionary"""
-    values = get_values(data_str, fields)
-
-  def get_table_name(self, data_str):
+  def __get_table_name(self, data_str):
     match_obj = re.search(r'-- Definition of table `(.*)`' , data_str)
     return match_obj.group(1)
 
-  def get_fields(self, data_str):
+  def __get_fields(self, data_str):
     begin = data_str.find("CREATE TABLE")
     end = data_str.find("ENGINE")
     fields = collections.OrderedDict()
@@ -44,7 +40,7 @@ class ParsedData(object):
         fields[exp.group(1)] = [exp.group(2), exp.group(3)]
     return fields
 
-  def get_values(self, data_str):
+  def __get_values(self, data_str):
     begin = data_str.find("VALUES")
     values = {}
     for line in data_str[begin:].splitlines():
@@ -63,3 +59,23 @@ class ParsedData(object):
             'fields': self.fields,
             'values': self.values,
             'primary_key': self.primary_key}
+
+class BackupData(object):
+
+  def __init__(self):
+    self.content = {}
+    self.json = ''
+
+  def load_from_dictionary(self, dictionary):
+    self.content = dictionary
+    self.__update_json()
+
+  def load_from_json(seld, json):
+    self.json = json
+    self.__update_content()
+
+  def __update_json(self):
+    self.json = json.dumps(self.content)
+
+  def __update_content(self):
+    self.content = json.loads(self.json)

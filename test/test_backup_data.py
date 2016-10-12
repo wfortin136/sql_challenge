@@ -1,28 +1,24 @@
 from sql_backup_data import SQLBackup
 from nose.tools import with_setup
+import sqlite3
 
-#def setup_func():
-#    "setup fixture"
-#
-#def teardown_func():
-#    "teardown fixture"
+def setup_sqlite():
+  "generate sqlite db with some data"
 
-
-def test_storing_name_of_file_into_python_object():
+def teardown_sqlite():
+  "teardown to make test idempotent"
+ 
+@with_setup(setup_sqlite, teardown_sqlite)
+def test_inserting_new_json_object_into_sqlite():
   pass
 
-def test_reading_json_blob_into_python_object():
+@with_setup(setup_sqlite, teardown_sqlite)
+def test_inserting_most_recent_json_object_into_sqlite():
   pass
 
-def test_converting_python_object_to_json():
+@with_setup(setup_sqlite, teardown_sqlite)
+def test_inserting_out_of_date_existing_json_object_into_sqlite():
   pass
 
-def test_writing_json_data_to_file():
+def test_loading_json_object_into_postgres():
   pass
-
-def test_new_column_between_json_blobs():
-  pass
-
-def test_newest_data_between_json_blobs():
-  pass
-
