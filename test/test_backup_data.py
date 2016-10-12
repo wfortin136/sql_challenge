@@ -1,4 +1,5 @@
 from sql_backup_data import SQLBackup
+from nose.tools import with_setup
 
 #def setup_func():
 #    "setup fixture"
