@@ -56,7 +56,7 @@ class ParsedData(object):
 
   def generate_full_object(self):
     return {'table': self.table,
-            'fields': self.fields,
+            'fields': dict(self.fields),
             'values': self.values,
             'primary_key': self.primary_key}
 
@@ -66,11 +66,11 @@ class BackupData(object):
     self.content = {}
     self.json = ''
 
-  def load_from_dictionary(self, dictionary):
+  def load_from_dict(self, dictionary):
     self.content = dictionary
     self.__update_json()
 
-  def load_from_json(seld, json):
+  def load_from_json(self, json):
     self.json = json
     self.__update_content()
 
@@ -79,3 +79,39 @@ class BackupData(object):
 
   def __update_content(self):
     self.content = json.loads(self.json)
+  
+  def combine_json(self, json2):
+    dict2 = json.loads(json2)
+    return self.combine_dict(dict2)
+
+  def combine_dict(self, dict2):
+    
+    if len(self.content["values"]) > len(dict2["values"]):
+      large_set = self.content["values"]
+      small_set = dict2["values"]
+      base_set = self.content
+    else:
+      small_set = self.content["values"]
+      large_set = dict2["values"]
+      base_set = dict2
+
+    subset = {}
+    for key in small_set.keys():
+      if key in large_set:
+        updated_l = large_set[key]["updated_at"]
+        updated_s = small_set[key]["updated_at"]
+        if updated_l == 'NULL':
+          if updated_s != 'NULL':
+            subset[key] = small_set[key]
+        else:
+          if updated_s == 'NULL':
+            subset[key] = large_set[key]
+          else:
+            if updated_l > updated_s:
+              subset[key] = large_set[key]
+            else:
+              subset[key] =small_set[key]
+    base_set["values"].update(subset)
+    new_obj = BackupData()
+    new_obj.load_from_dict(base_set)
+    return new_obj 

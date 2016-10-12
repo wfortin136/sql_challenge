@@ -1,4 +1,4 @@
-from sql_backup_data import SQLBackup
+#from sql_backup_data import SQLBackup
 from nose.tools import with_setup
 import sqlite3
 

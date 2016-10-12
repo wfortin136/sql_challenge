@@ -56,7 +56,7 @@ class TestParsingBackupFile(unittest.TestCase):
                   '4': {'product_id':'259', 'component_id':'358', 'created_at':'2008-11-19 16:50:36', 'updated_at':'2008-11-19 16:52:20','quantity':'1.000', 'line_num':'80', 'fixed': '1'}}
 
     self.actual_full_object = {'table': "compositions",
-                               'fields': self.actual_fields,
+                               'fields': dict(self.actual_fields),
                                'values': self.actual_values,
                                'primary_key': 'id'}
 
