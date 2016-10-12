@@ -6,8 +6,6 @@ from sql_backup_data import SQLBackup
 #def teardown_func():
 #    "teardown fixture"
 
-def test_reading_backup_file_into_python_object()
-  pass
 
 def test_storing_name_of_file_into_python_object()
   pass
