@@ -17,7 +17,8 @@ def read_file(file):
   return file_string
 
 class ParsedData(object):
-  
+  """Parse and store backup data from a backup file
+  """
   def __init__(self, file_str):
     self.table = self.__get_table_name(file_str)
     self.fields = self.__get_fields(file_str)
@@ -61,10 +62,12 @@ class ParsedData(object):
             'primary_key': self.primary_key}
 
 class BackupData(object):
-
+  """Load backup data from either json or dict and store as python obj for analysis
+  """
   def __init__(self):
     self.content = {}
     self.json = ''
+    self.name = ''
 
   def load_from_dict(self, dictionary):
     self.content = dictionary
@@ -81,11 +84,18 @@ class BackupData(object):
     self.content = json.loads(self.json)
   
   def combine_json(self, json2):
+    """Will return a new BackupData object with updated set
+       keep self and passed objecy immutable
+    """
     dict2 = json.loads(json2)
     return self.combine_dict(dict2)
 
   def combine_dict(self, dict2):
-    
+    """Will return a new BackupData object with updated set
+       keep self and passed objecy immutable
+    """
+    # iterate through smaller data set
+    # base_set will be the larger set and is used for updating
     if len(self.content["values"]) > len(dict2["values"]):
       large_set = self.content["values"]
       small_set = dict2["values"]
@@ -97,20 +107,29 @@ class BackupData(object):
 
     subset = {}
     for key in small_set.keys():
+      # determine wether to compare keys
       if key in large_set:
         updated_l = large_set[key]["updated_at"]
         updated_s = small_set[key]["updated_at"]
         if updated_l == 'NULL':
           if updated_s != 'NULL':
+            # update to not NULL set
+            # if both updated_at are NULL, things
+            # are ambuguos. We could defer to created_at
+            # but now we will default to the values in the
+            # larger set
             subset[key] = small_set[key]
         else:
           if updated_s == 'NULL':
+            # update to not NULL set
             subset[key] = large_set[key]
           else:
             if updated_l > updated_s:
               subset[key] = large_set[key]
             else:
               subset[key] =small_set[key]
+      else:
+        subset[key] = small_set[key]
     base_set["values"].update(subset)
     new_obj = BackupData()
     new_obj.load_from_dict(base_set)

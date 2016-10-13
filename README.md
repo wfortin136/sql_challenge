@@ -9,15 +9,14 @@ However, while there were some interesting aspects, the basic problem and soluti
 were a bit trivial. So I decided to slightly reframe the problem.
 
 
-If you had a set of db backup files, and you wanted to be able to store that data
-in a nosql db for time series anlysis, reconstituting to a specific snapshot in time, 
-or have the ability to migrate your data to another db (i.e. mysql -> postgres). 
+If you had a set of db backup files, you want to be able to store that data
+in a nosql db for time series anlysis, reconstitute data to a specific snapshot in time, 
+or have the ability to migrate your data to another db (i.e. snapshots of mysql -> postgres). 
 While this challenge won't solve the problem in it's entirety, it builds the 
-foundation for such environment. Specifically, the code will:
+foundation for such an environment. Specifically, the code will:
 * Read and parse a set of backup files from a directory
-* It will store that information in python object, that will provide reversible transformation
+* It will store that information in a python object that will provide reversible transformation
 between a python object and json blob
-* ABility to write our json objects to file
 * It will allow multiple backup json blobs to be combined into a single json blob
 
 Additional assumptions I'm making to make the problem more interesting:
