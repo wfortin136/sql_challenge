@@ -1,7 +1,7 @@
 import os
 import unittest
 from backup_sql import ParsedData
-import parse_backup 
+import backup_sql
 import collections
 
 CUR_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -62,13 +62,13 @@ class TestParsingBackupFile(unittest.TestCase):
 
   def test_getting_all_files_in_abs_dir(self):
     full_path_dir = os.path.abspath(BACKUP_DIR)
-    calc_files = parse_backup.get_all_file_names(full_path_dir)
+    calc_files = backup_sql.get_all_file_names(full_path_dir)
     def_files = map(lambda x: os.path.join(full_path_dir, x), ["backup_file_mdp.txt", "backup_file_xrf.txt"])
     assert calc_files == def_files
     
   def test_reading_backup_file(self):
     file_path = os.path.join(BACKUP_DIR, "backup_file_mdp.txt")
-    file_string = parse_backup.read_file(file_path)
+    file_string = backup_sql.read_file(file_path)
     assert  file_string == BACKUP_FILE_MDP
 
   def test_get_table_name(self):

@@ -32,7 +32,6 @@ Additional assumptions I'm making to make the problem more interesting:
 * Convert each python object to a json blob
 * Be able to read each json and convert back into python object
 * Be able to collate multiple json objects into a single json object reflecting latest state of data
-* Insert json blob into db (Append if new data, write over if existing data)
 
 ## Requirements
 * python 2.7
@@ -42,19 +41,23 @@ Additional assumptions I'm making to make the problem more interesting:
 We will first use virtualenv to isolate our python environment and the specific
 dependencies and packages for this project
 ```sh
-> cd <root_dorectory_of_this_repo>
-> virtualenv .
-> source bin/activate
+$ cd <root_dorectory_of_this_repo>
+$ virtualenv .
+$ source bin/activate
 ```
 We are now inside our virtual environment specific to this project.
 We will now install the dependencies for this project
 ```sh
-> pip install -r requirements.txt
+$ pip install -r requirements.txt
 ```
 
 ## Run
+```sh
+$ python generate_json_backups.py -d /abs_path_to/test/backup_files
+$ python generate_json_backups.py -h 
+```
 
 ## Tests
-> nosetests -s -v
-
-## Documentation
+```sh
+$ nosetests -s -v
+```

@@ -31,5 +31,7 @@ def test_combining_json():
   # Older value in json2 is not used
   assert obj_2.content["values"]["4"]["updated_at"] == "2008-11-19 16:52:20"
   
-def test_storing_name_of_file_into_python_object():
-  pass
+def test_generating_unique_name():
+  obj = BackupData()
+  obj.load_from_json(JSON1)
+  assert obj.name == "compositions_4_2008-11-19_16-52-20"

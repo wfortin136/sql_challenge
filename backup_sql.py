@@ -7,7 +7,8 @@ import json
 def get_all_file_names(directory):
   """directory must be absolute path. 
   Returns an array with the fully qualified name"""
-  return map(lambda x:os.path.join(directory, x) , os.listdir(directory))
+  files = map(lambda x:os.path.join(directory, x), os.listdir(directory))
+  return [f for f in files if os.path.isfile(f)]
 
 def read_file(file):
   """file is a string of the absolute path to the file.
@@ -72,10 +73,12 @@ class BackupData(object):
   def load_from_dict(self, dictionary):
     self.content = dictionary
     self.__update_json()
+    self.__set_name()
 
   def load_from_json(self, json):
     self.json = json
     self.__update_content()
+    self.__set_name()
 
   def __update_json(self):
     self.json = json.dumps(self.content)
@@ -89,6 +92,28 @@ class BackupData(object):
     """
     dict2 = json.loads(json2)
     return self.combine_dict(dict2)
+  
+  def __set_name(self):
+    """name will include table name and latest timestamp in file
+    """
+    table_name = self.get_table_name()
+    record, timestamp = self.__get_max_timestamp()
+    self.name = "%s_%s_%s" % (table_name, record, timestamp)
+
+  def get_table_name(self):
+    return self.content["table"]
+
+  def __get_max_timestamp(self):
+    max_timestamp = ''
+    index = '0'
+    for key, value in self.content["values"].iteritems():
+      cur_timestamp = value["updated_at"]
+      if cur_timestamp != 'NULL':
+        if max_timestamp == '' or cur_timestamp > max_timestamp:
+          max_timestamp = cur_timestamp
+          index = key
+
+    return index, max_timestamp.replace(' ', '_').replace(':','-')
 
   def combine_dict(self, dict2):
     """Will return a new BackupData object with updated set
@@ -115,9 +140,9 @@ class BackupData(object):
           if updated_s != 'NULL':
             # update to not NULL set
             # if both updated_at are NULL, things
-            # are ambuguos. We could defer to created_at
-            # but now we will default to the values in the
-            # larger set
+            # are ambiguos. We could defer to created_at
+            # but for simplicity we will default to
+            # the values in the larger set
             subset[key] = small_set[key]
         else:
           if updated_s == 'NULL':
