@@ -1,0 +1,27 @@
+--
+-- Definition of table `compositions`
+--
+
+DROP TABLE IF EXISTS `compositions`;
+CREATE TABLE `compositions` (
+ `id` int(11) NOT NULL auto_increment,
+ `product_id` int(11) default NULL,
+ `component_id` int(11) default NULL,
+ `created_at` datetime default NULL,
+ `updated_at` datetime default NULL,
+ `quantity` decimal(15,3) default '1.000',
+ `line_num` int(11) default NULL,
+ `fixed` tinyint(1) default NULL,
+ PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `compositions`
+--
+
+/*!40000 ALTER TABLE `compositions` DISABLE KEYS */;
+INSERT INTO `compositions`
+(`id`,`product_id`,`component_id`,`created_at`,`updated_at`,`quantity`,`line_num`,`fixed`)
+VALUES
+ (3,NULL,190,'2008-07-24 10:27:34','2008-07-25 10:27:34','20.000',NULL,NULL),
+ (8,66,22,'2008-01-19 00:00:00','2008-01-19 00:52:00','7.000',99,1);

@@ -10,8 +10,8 @@ were a bit trivial. So I decided to slightly reframe the problem.
 
 
 If you had a set of db backup files, you want to be able to store that data
-in a nosql db for time series anlysis, reconstitute data to a specific snapshot in time, 
-or have the ability to migrate your data to another db (i.e. snapshots of mysql -> postgres). 
+as key value pairs in a nosql db for time series anlysis, reconstituting data to a specific 
+snapshot in time,  or have the ability to migrate your data to another db (i.e. snapshots of mysql -> postgres). 
 While this challenge won't solve the problem in it's entirety, it builds the 
 foundation for such an environment. Specifically, the code will:
 * Read and parse a set of backup files from a directory
@@ -56,6 +56,8 @@ $ pip install -r requirements.txt
 $ python generate_json_backups.py -d /abs_path_to/test/backup_files
 $ python generate_json_backups.py -h 
 ```
+You should be able to check the test/backup_files/json/ directory and see each backup file
+as well as the combination of those files, taking precedence on latest data
 
 ## Tests
 ```sh
